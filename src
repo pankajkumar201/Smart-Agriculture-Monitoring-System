@@ -1,0 +1,66 @@
+#include <Nokia_LCD.h>
+Nokia_LCD lcd(11 , 8 , 9 , 12 , 10 );
+
+void setup() {
+put your setup code here, to run once:
+  lcd.begin();
+  Serial.begin(9600);
+  pinMode(5, OUTPUT); //trigger
+  pinMode(6, INPUT); //echo
+  pinMode(17, INPUT); //LDR SENSOR
+  pinMode(29, OUTPUT); //FOR BUZZER
+  pinMode(26, INPUT);//analog pin for soil sensor
+  pinMode(30, OUTPUT);//FOR LED
+  lcd.setBacklight(true);
+  lcd.setContrast(60);
+  lcd.setCursor(0, 0);
+  delay(2000);
+}
+void loop() {
+//For Ultrasonic Sensor
+  digitalWrite(5, LOW);
+  delayMicroseconds(2);
+  digitalWrite(5, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(5, LOW);
+  int t = pulseIn(6, HIGH);
+  int d = (0.0343 * t) / 2;
+  Serial.print("distance is");
+  Serial.println(d);
+  delay(500);
+  lcd.print("distance is");
+  lcd.print(d);
+  lcd.println("cm");
+  delay(100);
+  lcd.clear(true);
+// FOR LDR SENSOR
+  int  a = digitalRead(17);
+  if (a == 1)
+  {
+    Serial.println(" light detected");
+    digitalWrite(29, HIGH);
+    delay(1000);
+  }
+  else if (a == 0)
+  {
+    Serial.println(" light not detected");
+    digitalWrite(29, LOW);
+    delay(1000);
+  }
+//FOR soil moisture sensor
+  int soil = analogRead(26);
+  Serial.print("Sensor_data:");
+  Serial.print(soil);
+  Serial.print("\t | ");
+  if (soil > 2400)
+  {
+    Serial.println("No moisture, Soil is dry");
+    digitalWrite(30, LOW);
+  }
+  else if (soil <= 2400)
+  {
+    Serial.println("Soil is wet");
+    digitalWrite(30, HIGH);
+  }
+  delay(100);
+}
