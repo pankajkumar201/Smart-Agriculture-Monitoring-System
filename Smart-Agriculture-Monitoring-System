@@ -1,0 +1,12 @@
+Smart-Agriculture-Monitoring-System/
+│
+├── src/
+│   └── smart_agriculture.ino
+│
+├── images/
+│   └── lcd_output.jpg
+│
+├── docs/
+│   └── Mini_Project_Presentation.pptx
+│
+└── README.md
